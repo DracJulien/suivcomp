@@ -22,7 +22,7 @@ describe('Auth Endpoints', () => {
             "username": "wronguser",
             "password": "wrongpassword"
             });
-    console.log(res2)
+    console.log(res2.body)
     expect(res2.statusCode).toEqual(401);
     expect(res2.body).toHaveProperty('message', 'Invalid credentials');
   });
