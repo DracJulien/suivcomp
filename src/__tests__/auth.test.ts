@@ -20,7 +20,7 @@ describe('Auth Endpoints', () => {
       .post('/api/auth/login')
       .send({
         username: 'wronguser',
-        password: 'wrongpassword',
+        password: 'wrongpassword'
       });
 
     expect(res2.statusCode).toEqual(401);
