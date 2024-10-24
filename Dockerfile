@@ -18,7 +18,7 @@ RUN npx prisma generate
 RUN npm install -g ts-node nodemon
 
 # Exposer le port sur lequel l'application écoute
-EXPOSE 3000
+EXPOSE 3001
 
 # Démarrer l'application en mode développement
 CMD ["npm", "run", "dev"]
