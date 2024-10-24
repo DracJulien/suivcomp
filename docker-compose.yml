@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  auth:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app  # Montez le répertoire actuel dans le conteneur
+      - /app/node_modules  # Ignorez le dossier node_modules local
+    env_file:
+      - .env.docker
+    depends_on:
+      - db_check
+
+  db_check:
+    image: alpine
+    command: sh -c "until nc -z host.docker.internal 3307; do echo waiting for mysql; sleep 2; done;"
