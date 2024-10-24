@@ -8,7 +8,7 @@ const router = Router();
  * @swagger
  * /api/roles:
  *   post:
- *     summary: Create a new role (Admin only)
+ *     summary: Create a new role
  *     tags: [Role]
  *     security:
  *       - bearerAuth: []
