@@ -22,7 +22,7 @@ export default [
       ...jestPlugin.configs.recommended.rules,
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      'no-console': 'warn',
+      'no-console': 'off',
     },
   },
 ];
