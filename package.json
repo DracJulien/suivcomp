@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint . --config ./eslint.config.mjs --quiet --fix",
-    "test": "jest --forceExit",
+    "test": "jest --forceExit --coverage",
     "test:watch": "jest --watch"
   },
   "keywords": [],
