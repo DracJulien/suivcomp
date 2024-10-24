@@ -42,6 +42,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Validate Prisma schema
+      - name: Validate Prisma Schema
+        run: npx prisma validate
+
       # Apply Prisma migrations
       - name: Run Prisma Migrate
         run: npx prisma migrate dev --name init
