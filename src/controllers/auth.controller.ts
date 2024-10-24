@@ -77,7 +77,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         password: true, // Récupérer le mot de passe pour le comparer
       },
     });
-    console.log(user)
     if (!user) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
