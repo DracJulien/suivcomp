@@ -31,8 +31,9 @@ jobs:
         run: npm run lint
 
   build-and-test:
+    needs: lint
     env:
-       DATABASE_URL: mysql://root:password@127.0.0.1:3306/testdb
+      DATABASE_URL: mysql://root:password@127.0.0.1:3306/testdb
     services:
       db:
         image: mysql:5.7
@@ -71,10 +72,7 @@ jobs:
       - name: Run Prisma Migrate
         run: npx prisma migrate dev --name init
 
-      # Run Lint
-      - name: Run ESLint
-        run: npm run lint
-
+      
       # Run Tests
       - name: Run Tests
         run: npm test
