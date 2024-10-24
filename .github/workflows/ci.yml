@@ -9,9 +9,30 @@ on:
       - '**'
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run ESLint
+      - name: Run ESLint
+        run: npm run lint
+
   build-and-test:
     env:
-      DATABASE_URL: mysql://root:password@127.0.0.1:3306/testdb
+       DATABASE_URL: mysql://root:password@127.0.0.1:3306/testdb
     services:
       db:
         image: mysql:5.7
@@ -58,23 +79,4 @@ jobs:
       - name: Run Tests
         run: npm test
 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Setup Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      # Install dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Run ESLint
-      - name: Run ESLint
-        run: npm run lint
+  
