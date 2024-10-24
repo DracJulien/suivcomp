@@ -41,6 +41,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Apply Prisma migrations
+      - name: Run Prisma Migrate
+        run: npx prisma migrate dev --name init
+
       # Run Lint
       - name: Run ESLint
         run: npm run lint
