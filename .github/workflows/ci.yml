@@ -11,13 +11,13 @@ on:
 jobs:
   build-and-test:
     env:
+      DATABASE_URL: mysql://root:password@127.0.0.1:3306/testdb
     services:
       db:
         image: mysql:5.7
         ports:
           - 3306:3306
         env:
-          DATABASE_URL: mysql://root:password@127.0.0.1:3306/testdb
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: testdb
         options: >-
