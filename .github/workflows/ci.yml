@@ -72,7 +72,11 @@ jobs:
       - name: Run Prisma Migrate
         run: npx prisma migrate dev --name init
 
-      
+      # Seed Database with Admin Role and User
+      - name: Seed Database
+        run: |
+          npx ts-node ./prisma/seed.ts
+          
       # Run Tests
       - name: Run Tests
         run: npm test
