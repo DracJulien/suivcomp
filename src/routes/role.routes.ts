@@ -49,7 +49,7 @@ router.post('/', checkRole('Admin'), createRole);
  *         required: true
  *         schema:
  *           type: integer
- *         description: ID of the role to update
+ *         description: Name of the role to update
  *     requestBody:
  *       required: true
  *       content:

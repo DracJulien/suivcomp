@@ -24,6 +24,7 @@ export const handleJsonParsingError = (err: unknown, req: Request, res: Response
   next(err);
   if (err instanceof SyntaxError && err.message === 'Invalid JSON format') {
     res.status(400).json({ message: 'Invalid JSON format in request body' });
+    return;
   } else {
     next(err);
   }
@@ -39,4 +40,5 @@ export const globalErrorHandler = (err: unknown, req: Request, res: Response, ne
   next();
   console.error(err);
   res.status(500).json({ message: 'Internal Server Error', error: (err as Error).message });
+  return;
 };

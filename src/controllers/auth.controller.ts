@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import prisma from '../middlewares/prisma';
 import { validatePassword } from '../utils/validatePassword';
 export const register = async (req: Request, res: Response): Promise<void> => {
-  const { username, password, roleName } = req.body;
+  const { username, password } = req.body;
 
   if (!username || !password) {
     res.status(400).json({ message: 'Username and password are required' });
@@ -31,11 +31,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
 
     // Récupérer le rôle à partir du nom
     const role = await prisma.role.findUnique({
-      where: { name: roleName || 'User' },
+      where: { name: 'User' },
     });
 
     if (!role) {
-      res.status(400).json({ message: `Role ${roleName} does not exist` });
+      res.status(400).json({ message: `Role does not exist` });
       return;
     }
 
@@ -50,9 +50,11 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     });
 
 
-    res.status(201).json({ message: 'User registered successfully', user });
+     res.status(201).json({ message: 'User registered successfully', user });
+     return;
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: (error as Error).message });
+    return;
   }
 };
 
@@ -92,7 +94,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     // Générer un token JWT
     const token = jwt.sign({ userId: user.id }, 'secretKey', { expiresIn: '1h' });
     res.status(200).json({ token });
+    return;
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: (error as Error).message });
+    return;
   }
 };

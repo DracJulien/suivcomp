@@ -44,6 +44,7 @@ export const checkRole = (requiredRole: string) => {
       next();
     } catch  {
       res.status(403).json({ message: 'Access forbidden: invalid token' });
+      return;
     }
   };
 };
@@ -72,5 +73,6 @@ export const checkRoleOrSelf = (requiredRole: string) => {
       next();
       } catch {}
       res.status(403).json({ message: 'Access forbidden: invalid token' });
+      return;
     }
 }
