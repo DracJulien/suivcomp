@@ -52,6 +52,7 @@ export const updateUser = async (req: Request, res: Response) : Promise<void> =>
     });
 
     res.status(200).json({ message: 'User updated successfully', updatedUser });
+    return;
   } catch (error: unknown) {
     if (error instanceof Error) {
       res.status(500).json({ message: 'Server error', error: error.message });

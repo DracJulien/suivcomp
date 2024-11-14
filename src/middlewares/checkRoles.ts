@@ -60,19 +60,38 @@ export const checkRoleOrSelf = (requiredRole: string) => {
       }
 
       const token = authHeader.split(' ')[1];
-      const decoded = jwt.verify(token, 'secretKey') as {userId: number; role: string};
+      const decoded = jwt.verify(token, 'secretKey') as JwtPayload;
 
       const userIdToActOn = parseInt(req.params.id, 10);
 
-      // Vérifier si l'utilisateur a le rôle requis ou s'il agit sur lui-même
-      if (decoded.role !== requiredRole && decoded.userId !== userIdToActOn) {
+      if (!decoded || !decoded.userId) {
+        res.status(403).json({ message: 'Access forbidden: invalid token' });
+        return;
+      }
+
+      const userId = parseInt(decoded.userId, 10);
+      if (isNaN(userId)) {
+        res.status(403).json({ message: 'Access forbidden: invalid token' });
+        return;
+      }
+
+      // Include role when fetching the user from the database
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: { role: true },
+      });
+
+      // Check if the user has the required role or is acting on themselves
+      if (!user || (user.role?.name !== requiredRole && user.id !== userIdToActOn)) {
         res.status(403).json({ message: 'Access forbidden: insufficient rights' });
         return;
       }
 
+      // User is authorized
       next();
-      } catch {}
+    } catch (error) {
+      console.error("Error in checkRoleOrSelf middleware:", error);
       res.status(403).json({ message: 'Access forbidden: invalid token' });
-      return;
     }
-}
+  };
+};

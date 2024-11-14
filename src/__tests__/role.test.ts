@@ -16,13 +16,11 @@ describe('Role Endpoints', () => {
     await prisma.role.deleteMany({
       where: {
         name: {
-          in: ['Admin', 'Manager', 'Team Lead', 'TemporaryRole'],
+          in: ['Manager', 'Team Lead', 'TemporaryRole'],
         },
       },
     });
 
-    // Créer le rôle Admin
-    await prisma.role.create({ data: { name: 'Admin' } });
 
     // Créer un utilisateur administrateur
     await prisma.user.create({
@@ -60,6 +58,6 @@ describe('Role Endpoints', () => {
 
   afterAll(async () => {
     await prisma.user.deleteMany({ where: { username: 'admin_role' } });
-    await prisma.role.deleteMany({ where: { name: { in: ['Admin', 'Manager', 'Team Lead', 'TemporaryRole'] } } });
+    await prisma.role.deleteMany({ where: { name: { in: [ 'Manager', 'Team Lead', 'TemporaryRole'] } } });
   });
 });

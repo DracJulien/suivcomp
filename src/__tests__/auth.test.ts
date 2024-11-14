@@ -13,12 +13,6 @@ describe('Auth Endpoints', () => {
         },
       },
     });
-
-    await prisma.role.upsert({
-      where: { name: 'User' },
-      update: {},
-      create: { name: 'User' },
-    });
   });
 
   it('should register a new user', async () => {

@@ -92,19 +92,17 @@ router.delete('/delete/:id', checkRole('Admin'), deleteUser);
 
 /**
  * @swagger
- * /api/users/deactivate/:id:
- *   delete:
+ * /api/users/deactivate/{id}:
+ *   patch:
  *     summary: Deactivate a user
  *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: integer 
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID of the user to update
  *     responses:
  *       200:
  *         description: Deactivate successful
