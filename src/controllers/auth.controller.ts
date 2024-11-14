@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import prisma from '../config/prisma';
+import prisma from '../middlewares/prisma';
 import { validatePassword } from '../utils/validatePassword';
 export const register = async (req: Request, res: Response): Promise<void> => {
   const { username, password, roleName } = req.body;
@@ -49,6 +49,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
       },
     });
 
+
     res.status(201).json({ message: 'User registered successfully', user });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: (error as Error).message });
@@ -70,8 +71,12 @@ export const login = async (req: Request, res: Response): Promise<void> => {
       where: {
         username,
       },
+      select: {
+        id: true,
+        username: true,
+        password: true, // Récupérer le mot de passe pour le comparer
+      },
     });
-
     if (!user) {
       res.status(401).json({ message: 'Invalid credentials' });
       return;
@@ -87,24 +92,6 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     // Générer un token JWT
     const token = jwt.sign({ userId: user.id }, 'secretKey', { expiresIn: '1h' });
     res.status(200).json({ token });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: (error as Error).message });
-  }
-};
-
-export const deleteUser = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.body;
-
-  if (!id) {
-    res.status(400).json({ message: 'Role name is required' });
-    return;
-  }
-
-  try {
-    await prisma.user.delete({
-      where: { id },
-    });
-    res.status(201).json({ message: 'User deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: (error as Error).message });
   }

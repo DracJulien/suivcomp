@@ -16,6 +16,7 @@ model User {
   // Relation avec le modèle Role
   role      Role?    @relation(fields: [roleId], references: [id])
   roleId    Int?
+  active    Boolean  @default(true) //indique si l'utilisateur est actif
 }
 
 model Role {

@@ -47,3 +47,30 @@ export const checkRole = (requiredRole: string) => {
     }
   };
 };
+
+
+export const checkRoleOrSelf = (requiredRole: string) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const authHeader = req.headers.authorization;
+      if (!authHeader) {
+        res.status(401).json({ message: 'Authorization header missing' });
+        return;
+      }
+
+      const token = authHeader.split(' ')[1];
+      const decoded = jwt.verify(token, 'secretKey') as {userId: number; role: string};
+
+      const userIdToActOn = parseInt(req.params.id, 10);
+
+      // Vérifier si l'utilisateur a le rôle requis ou s'il agit sur lui-même
+      if (decoded.role !== requiredRole && decoded.userId !== userIdToActOn) {
+        res.status(403).json({ message: 'Access forbidden: insufficient rights' });
+        return;
+      }
+
+      next();
+      } catch {}
+      res.status(403).json({ message: 'Access forbidden: invalid token' });
+    }
+}

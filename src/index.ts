@@ -3,10 +3,16 @@ import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import authRoutes from './routes/auth.routes';
 import roleRoutes from './routes/role.routes';
+import userRoutes from './routes/user.routes';
+
+import { jsonErrorHandler, globalErrorHandler, handleJsonParsingError } from './middlewares/jsonErrorHandler';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+app.use(jsonErrorHandler);
+
+// Utiliser le middleware de gestion des erreurs JSON après jsonErrorHandler
+app.use(handleJsonParsingError);
 
 // Configuration de Swagger
 const swaggerOptions = {
@@ -45,7 +51,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes)
 app.use('/api/roles', roleRoutes);
+
+// Middleware de gestion des autres erreurs
+app.use(globalErrorHandler);
 
 // Démarrer le serveur
 app.listen(PORT, () => {

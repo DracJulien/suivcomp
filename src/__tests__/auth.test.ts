@@ -19,10 +19,10 @@ describe('Auth Endpoints', () => {
     const res2 = await request(app)
       .post('/api/auth/login')
       .send({
-        username: 'wronguser',
-        password: 'wrongpassword',
-      });
-
+            "username": "wronguser",
+            "password": "wrongpassword"
+            });
+    console.log(res2.body)
     expect(res2.statusCode).toEqual(401);
     expect(res2.body).toHaveProperty('message', 'Invalid credentials');
   });

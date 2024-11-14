@@ -1,15 +1,20 @@
 import { Router } from 'express';
-import { register, login } from '../controllers/auth.controller';
-import { checkRole } from '../middlewares/checkRoles';
-import { deleteUser } from '../controllers/auth.controller';
+import { register, login} from '../controllers/auth.controller';
 const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: API for user authentication and management
+ */
 
 /**
  * @swagger
  * /api/auth/register:
  *   post:
  *     summary: Register a new user
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:
@@ -34,7 +39,7 @@ router.post('/register', register);
  * /api/auth/login:
  *   post:
  *     summary: Login a user
- *     tags: [Auth]
+ *     tags: [Authentication]
  *     requestBody:
  *       required: true
  *       content:
@@ -54,27 +59,4 @@ router.post('/register', register);
  */
 router.post('/login', login);
 
-
-/**
- * @swagger
- * /api/auth/delete:
- *   delete:
- *     summary: Delete a user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               id:
- *                 type: integer 
- *     responses:
- *       200:
- *         description: Delete successful
- *       401:
- *         description: Error deleting user
- */
-router.delete('/delete', checkRole('Admin'), deleteUser);
 export default router;
