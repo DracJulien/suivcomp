@@ -79,3 +79,21 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
     }
   }
 };
+
+export const deactivateUser = async (req: Request, res: Response): Promise<void> => {
+  const userId = parseInt(req.params.id);
+ 
+  try {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { active: false },
+  });
+    res.status(200).json({ message: 'User deactivated successfully', user });
+   } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+    } else {
+      res.status(500).json({ message: 'Unknown server error' });
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { getAllUsers, deleteUser, updateUser } from '../controllers/user.controller';
-import { checkRole } from '../middlewares/checkRoles';
+import { getAllUsers, deleteUser, updateUser, deactivateUser } from '../controllers/user.controller';
+import { checkRole, checkRoleOrSelf } from '../middlewares/checkRoles';
 const router = Router();
 
 /**
@@ -89,5 +89,28 @@ router.put('/:id',checkRole('Admin'),updateUser);
  *         description: Error deleting user
  */
 router.delete('/delete/:id', checkRole('Admin'), deleteUser);
+
+/**
+ * @swagger
+ * /api/users/deactivate/:id:
+ *   delete:
+ *     summary: Deactivate a user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer 
+ *     responses:
+ *       200:
+ *         description: Deactivate successful
+ *       401:
+ *         description: Error deactivating user
+ */
+router.patch('/deactivate/:id',checkRoleOrSelf('Admin'), deactivateUser)
 
 export default router;
